@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from os import scandir, rename
 from os.path import splitext, exists, join
 from shutil import move
@@ -13,6 +15,7 @@ dest_dir_audio = "/Users/serbanples/Desktop/files/audios"
 dest_dir_video = "/Users/serbanples/Desktop/files/videos"
 dest_dir_image = "/Users/serbanples/Desktop/files/images"
 dest_dir_document = "/Users/serbanples/Desktop/files/documents"
+dest_dir_code = "/Users/serbanples/Desktop/files/code"
 
 image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".gif", 
                     ".apng", ".avif", ".pjpeg", ".pjp", ".k25", ".bmp", ".dib", ".heif", 
@@ -24,6 +27,8 @@ video_extensions = [".webm", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".ogg", ".
 audio_extensions = [".m4a", ".flac", ".mp3", ".wav", ".wma", ".aac"]
 
 document_extensions = [".doc", ".docx", ".txt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx", ".odt"]
+
+code_extensions = [".py", ".c", ".cpp", ".html", ".css", ".js", ".ts", ".jsx", ".tsx", ".java"]
 
 def make_unique(dest, name):
     filename, extension = splitext(name)
@@ -51,6 +56,7 @@ class MoverHandler(FileSystemEventHandler):
                 self.check_video_files(entry, name)
                 self.check_image_files(entry, name)
                 self.check_document_files(entry, name)
+                self.check_code_files(entry, name)
 
     def check_audio_files(self, entry, name):
         for audio_extension in audio_extensions:
@@ -75,6 +81,12 @@ class MoverHandler(FileSystemEventHandler):
             if name.endswith(document_extension) or name.endswith(document_extension.upper()):
                 move_file(dest_dir_document, entry, name)
                 logging.info(f"Moved document file: {name}")
+
+    def check_code_files(self, entry, name):
+        for code_extension in code_extensions:
+            if name.endswith(code_extension) or name.endswith(code_extension.upper()):
+                move_file(dest_dir_code, entry, name)
+                logging.info(f"Moved code file: {name}")
 
 
 if __name__ == "__main__":
